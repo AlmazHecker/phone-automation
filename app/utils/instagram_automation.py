@@ -214,6 +214,11 @@ class InstagramAutomation:
             d.swipe_ext("up", 0.8)
             time.sleep(2)
 
+            current_activity = d.app_current().get("activity")
+            if current_activity == 'androidx.credentials.playservices.HiddenActivity':
+                print("Detected HiddenActivity overlay. Dismissing...")
+                d.press("back")
+
             return True, "Instagram is open"
         except Exception as e:
             logger.error(f"Error ensuring Instagram is open: {str(e)}")
@@ -373,8 +378,6 @@ class InstagramAutomation:
             
             # Ensure Instagram is open
             self.ensure_instagram_open(device_id)
-            print(d.app_current())
-            print(d.dump_hierarchy())
             time.sleep(12)
 
             # Check if account already exists and is logged in
